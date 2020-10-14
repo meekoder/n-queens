@@ -79,12 +79,26 @@
     //
     // test if a specific row on this board contains a conflict
     hasRowConflictAt: function(rowIndex) {
-      return false; // fixme
+      const board = this.rows();
+      const row = board[rowIndex];
+      let numOfQ = 0;
+      for (let i = 0; i < row.length; i++) {
+        if (row[i] === 1) {
+          numOfQ++;
+        }
+      }
+      return numOfQ > 1;
     },
 
     // test if any rows on this board contain conflicts
     hasAnyRowConflicts: function() {
-      return false; // fixme
+      const board = this.rows();
+      for (let i = 0; i < board.length; i++) {
+        if (this.hasRowConflictAt(i)) {
+          return true;
+        }
+      }
+      return false;
     },
 
 
@@ -94,12 +108,26 @@
     //
     // test if a specific column on this board contains a conflict
     hasColConflictAt: function(colIndex) {
-      return false; // fixme
+      const board = this.rows();
+      const col = [];
+      let numOfQ = 0;
+      for (let rowIdx = 0; rowIdx < board.length; rowIdx++) {
+        if (board[rowIdx][colIndex] === 1) {
+          numOfQ++;
+        }
+      }
+      return numOfQ > 1;
     },
 
     // test if any columns on this board contain conflicts
     hasAnyColConflicts: function() {
-      return false; // fixme
+      const board = this.rows();
+      for (let i = 0; i < board.length; i++) {
+        if (this.hasColConflictAt(i)) {
+          return true;
+        }
+      }
+      return false;
     },
 
 
@@ -109,16 +137,40 @@
     //
     // test if a specific major diagonal on this board contains a conflict
     hasMajorDiagonalConflictAt: function(majorDiagonalColumnIndexAtFirstRow) {
-      return false; // fixme
+      return this.hasAnyMajorDiagonalConflicts();
     },
 
     // test if any major diagonals on this board contain conflicts
     hasAnyMajorDiagonalConflicts: function() {
-      return false; // fixme
+      const board = this.rows();
+      for (let i = board.length; i > 0; i--) {
+        let x = 0;
+        for (let j = 0; j < board.length; j++) {
+          if (j - i < 0) {
+            continue;
+          }
+          x += board[j][j - i];
+        }
+        if (x > 1) {
+          return true;
+        }
+      }
+
+      for (let i = 0; i < board.length; i++) {
+        let x = 0;
+        for (let j = 0; j < board.length; j++) {
+          if (j + i > board.length - 1) {
+            continue;
+          }
+          x += board[j][j + i];
+        }
+        if (x > 1) {
+          return true;
+        }
+      }
+      return false;
     },
-
-
-
+    
     // Minor Diagonals - go from top-right to bottom-left
     // --------------------------------------------------------------
     //
