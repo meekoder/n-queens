@@ -142,27 +142,27 @@
     hasAnyMajorDiagonalConflicts: function() {
       const board = this.rows();
       for (let i = board.length; i > 0; i--) {
-        let x = 0;
+        let conflicts = 0;
         for (let j = 0; j < board.length; j++) {
           if (j - i < 0) {
             continue;
           }
-          x += board[j][j - i];
+          conflicts += board[j][j - i];
         }
-        if (x > 1) {
+        if (conflicts > 1) {
           return true;
         }
       }
 
       for (let i = 0; i < board.length; i++) {
-        let x = 0;
+        let conflicts = 0;
         for (let j = 0; j < board.length; j++) {
           if (j + i > board.length - 1) {
             continue;
           }
-          x += board[j][j + i];
+          conflicts += board[j][j + i];
         }
-        if (x > 1) {
+        if (conflicts > 1) {
           return true;
         }
       }
@@ -173,45 +173,39 @@
     // --------------------------------------------------------------
     //
     // test if a specific minor diagonal on this board contains a conflict
+    //
+    //
     hasMinorDiagonalConflictAt: function(minorDiagonalColumnIndexAtFirstRow) {
       return this.hasAnyMinorDiagonalConflicts(); // fixme
     },
 
     // test if any minor diagonals on this board contain conflicts
     hasAnyMinorDiagonalConflicts: function() {
-      const boardObj = new Board([
-        [1, 2, 3, 4],
-        [5, 6, 7, 8],
-        [9, 10, 11, 12],
-        [13, 14, 15, 16]]);
-      const board = boardObj.rows();
-      console.log(board);
-      let diags = [];
+      const board = this.rows();
+
       for (let i = board.length - 1; i >= 0; i--) {
-        let diag = [];
+        let conflicts = 0;
         for (let j = board.length - 1; j >= 0; j--) {
           if (i - j >= 0) {
-            console.log(board[j][i - j]);
-            diag.push(board[j][i - j]);
+            conflicts += board[j][i - j];
           }
         }
-        diags.push(diag);
-        console.log(diags);
-      }
-      let halfDiags = [];
-      console.warn(board);
-      for (let i = board.length - 1; i > 0; i--) {
-        let diag = [];
-        let x = 0;
-        for (let j = board.length - 1; j >= i; j--) {
-          const k = i - j;
-          console.warn(board.length - 1 + k, j);
-          diag.push(board[board.length - 1 + k][j]);
-        }
-        if (x > 1) {
+        if (conflicts > 1) {
           return true;
         }
       }
+
+      for (let i = board.length - 1; i > 0; i--) {
+        let conflicts = 0;
+        for (let j = board.length - 1; j >= i; j--) {
+          const k = i - j;
+          conflicts += board[board.length - 1 + k][j];
+        }
+        if (conflicts > 1) {
+          return true;
+        }
+      }
+
       return false;
     }
 
