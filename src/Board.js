@@ -62,14 +62,14 @@
     },
 
 
-/*
+    /*
          _             _     _
      ___| |_ __ _ _ __| |_  | |__   ___ _ __ ___ _
     / __| __/ _` | '__| __| | '_ \ / _ \ '__/ _ (_)
     \__ \ || (_| | |  | |_  | | | |  __/ | |  __/_
     |___/\__\__,_|_|   \__| |_| |_|\___|_|  \___(_)
 
- */
+*/
     /*=========================================================================
     =                 TODO: fill in these Helper Functions                    =
     =========================================================================*/
@@ -102,17 +102,15 @@
     },
 
 
-
     // COLUMNS - run from top to bottom
     // --------------------------------------------------------------
     //
     // test if a specific column on this board contains a conflict
     hasColConflictAt: function(colIndex) {
       const board = this.rows();
-      const col = [];
       let numOfQ = 0;
-      for (let rowIdx = 0; rowIdx < board.length; rowIdx++) {
-        if (board[rowIdx][colIndex] === 1) {
+      for (let i = 0; i < board.length; i++) {
+        if (board[i][colIndex] === 1) {
           numOfQ++;
         }
       }
@@ -170,18 +168,51 @@
       }
       return false;
     },
-    
+
     // Minor Diagonals - go from top-right to bottom-left
     // --------------------------------------------------------------
     //
     // test if a specific minor diagonal on this board contains a conflict
     hasMinorDiagonalConflictAt: function(minorDiagonalColumnIndexAtFirstRow) {
-      return false; // fixme
+      return this.hasAnyMinorDiagonalConflicts(); // fixme
     },
 
     // test if any minor diagonals on this board contain conflicts
     hasAnyMinorDiagonalConflicts: function() {
-      return false; // fixme
+      const boardObj = new Board([
+        [1, 2, 3, 4],
+        [5, 6, 7, 8],
+        [9, 10, 11, 12],
+        [13, 14, 15, 16]]);
+      const board = boardObj.rows();
+      console.log(board);
+      let diags = [];
+      for (let i = board.length - 1; i >= 0; i--) {
+        let diag = [];
+        for (let j = board.length - 1; j >= 0; j--) {
+          if (i - j >= 0) {
+            console.log(board[j][i - j]);
+            diag.push(board[j][i - j]);
+          }
+        }
+        diags.push(diag);
+        console.log(diags);
+      }
+      let halfDiags = [];
+      console.warn(board);
+      for (let i = board.length - 1; i > 0; i--) {
+        let diag = [];
+        let x = 0;
+        for (let j = board.length - 1; j >= i; j--) {
+          const k = i - j;
+          console.warn(board.length - 1 + k, j);
+          diag.push(board[board.length - 1 + k][j]);
+        }
+        if (x > 1) {
+          return true;
+        }
+      }
+      return false;
     }
 
     /*--------------------  End of Helper Functions  ---------------------*/
