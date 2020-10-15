@@ -16,10 +16,22 @@
 
 
 window.findNRooksSolution = function(n) {
-  var solution = undefined; //fixme
+  let boardObj = new Board({n: n});
+  let board = boardObj.rows();
 
-  console.log('Single solution for ' + n + ' rooks:', JSON.stringify(solution));
-  return solution;
+  for (let i = 0; i < board.length; i++) {
+    for (let j = 0; j < board.length; j++) {
+      board[i][j] = 1;
+      let rowConflict = boardObj.hasAnyRowConflicts();
+      let colConflict = boardObj.hasAnyColConflicts();
+      if (rowConflict || colConflict) {
+        board[i][j] = 0;
+      }
+    }
+  }
+
+  console.log('Single solution for ' + n + ' rooks:', JSON.stringify(board));
+  return board;
 };
 
 // return the number of nxn chessboards that exist, with n rooks placed such that none of them can attack each other
@@ -32,10 +44,24 @@ window.countNRooksSolutions = function(n) {
 
 // return a matrix (an array of arrays) representing a single nxn chessboard, with n queens placed such that none of them can attack each other
 window.findNQueensSolution = function(n) {
-  var solution = undefined; //fixme
+  // let boardObj = new Board({n: n});
+  // let board = boardObj.rows();
 
-  console.log('Single solution for ' + n + ' queens:', JSON.stringify(solution));
-  return solution;
+  // for (let i = 0; i < board.length; i++) {
+  //   for (let j = 0; j < board.length; j++) {
+  //     board[i][j] = 1;
+  //     let rowConflict = boardObj.hasAnyRowConflicts();
+  //     let colConflict = boardObj.hasAnyColConflicts();
+  //     let majorConflict = boardObj.hasAnyMajorDiagonalConflicts();
+  //     let minorConflict = boardObj.hasAnyMinorDiagonalConflicts();
+  //     if (rowConflict || colConflict || majorConflict || minorConflict) {
+  //       board[i][j] = 0;
+  //     }
+  //   }
+  // }
+  // console.log(board);
+  // console.log('Single solution for ' + n + ' queens:', JSON.stringify(board));
+  // return board;
 };
 
 // return the number of nxn chessboards that exist, with n queens placed such that none of them can attack each other
