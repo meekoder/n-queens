@@ -148,8 +148,8 @@
 
 
       for (let i = 0; i < board.length; i++) {
-        for (let j = 0; i < board.length; i++) {
-          if (board[i][j] === 1 && _getFirstRowColumnIndexForMajorDiagonalOn(i, j) === diag) {
+        for (let j = 0; j < board.length; j++) {
+          if (board[i][j] === 1 && this._getFirstRowColumnIndexForMajorDiagonalOn(i, j) === diag) {
             conflicts++;
             if (conflicts > 1) {
               return true;
@@ -165,12 +165,12 @@
     hasAnyMajorDiagonalConflicts: function() {
       let n = this.rows().length;
       for (let i = 0; i < n; i++) {
-        if (hasMajorDiagonalConflictAt(n)) {
+        if (this.hasMajorDiagonalConflictAt(i)) {
           return true;
         }
       }
       for (let i = 0; i > -n; i--) {
-        if (hasMajorDiagonalConflictAt(i)) {
+        if (this.hasMajorDiagonalConflictAt(i)) {
           return true;
         }
       }
