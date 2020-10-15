@@ -62,14 +62,14 @@
     },
 
 
-/*
+    /*
          _             _     _
      ___| |_ __ _ _ __| |_  | |__   ___ _ __ ___ _
     / __| __/ _` | '__| __| | '_ \ / _ \ '__/ _ (_)
     \__ \ || (_| | |  | |_  | | | |  __/ | |  __/_
     |___/\__\__,_|_|   \__| |_| |_|\___|_|  \___(_)
 
- */
+*/
     /*=========================================================================
     =                 TODO: fill in these Helper Functions                    =
     =========================================================================*/
@@ -77,16 +77,29 @@
     // ROWS - run from left to right
     // --------------------------------------------------------------
     //
-    // test if a specific row on this board contains a conflict
+    // test if a specific row on this board contains a conflict1
     hasRowConflictAt: function(rowIndex) {
-      return false; // fixme
+      const board = this.rows();
+      const row = board[rowIndex];
+      let numOfQ = 0;
+      for (let i = 0; i < row.length; i++) {
+        if (row[i] === 1) {
+          numOfQ++;
+        }
+      }
+      return numOfQ > 1;
     },
 
     // test if any rows on this board contain conflicts
     hasAnyRowConflicts: function() {
-      return false; // fixme
+      const board = this.rows();
+      for (let i = 0; i < board.length; i++) {
+        if (this.hasRowConflictAt(i)) {
+          return true;
+        }
+      }
+      return false;
     },
-
 
 
     // COLUMNS - run from top to bottom
@@ -94,12 +107,25 @@
     //
     // test if a specific column on this board contains a conflict
     hasColConflictAt: function(colIndex) {
-      return false; // fixme
+      const board = this.rows();
+      let numOfQ = 0;
+      for (let i = 0; i < board.length; i++) {
+        if (board[i][colIndex] === 1) {
+          numOfQ++;
+        }
+      }
+      return numOfQ > 1;
     },
 
     // test if any columns on this board contain conflicts
     hasAnyColConflicts: function() {
-      return false; // fixme
+      const board = this.rows();
+      for (let i = 0; i < board.length; i++) {
+        if (this.hasColConflictAt(i)) {
+          return true;
+        }
+      }
+      return false;
     },
 
 
@@ -109,27 +135,76 @@
     //
     // test if a specific major diagonal on this board contains a conflict
     hasMajorDiagonalConflictAt: function(majorDiagonalColumnIndexAtFirstRow) {
-      return false; // fixme
+      return this.hasAnyMajorDiagonalConflicts();
     },
 
-    // test if any major diagonals on this board contain conflicts
+    // test if any major diagonals on this board contain conflictsgit
     hasAnyMajorDiagonalConflicts: function() {
-      return false; // fixme
+      const board = this.rows();
+      for (let i = board.length; i > 0; i--) {
+        let x = 0;
+        for (let j = 0; j < board.length; j++) {
+          if (j - i < 0) {
+            continue;
+          }
+          x += board[j][j - i];
+        }
+        if (x > 1) {
+          return true;
+        }
+      }
+
+      for (let i = 0; i < board.length; i++) {
+        let x = 0;
+        for (let j = 0; j < board.length; j++) {
+          if (j + i > board.length - 1) {
+            continue;
+          }
+          x += board[j][j + i];
+        }
+        if (x > 1) {
+          return true;
+        }
+      }
+      return false;
     },
-
-
 
     // Minor Diagonals - go from top-right to bottom-left
     // --------------------------------------------------------------
     //
     // test if a specific minor diagonal on this board contains a conflict
     hasMinorDiagonalConflictAt: function(minorDiagonalColumnIndexAtFirstRow) {
-      return false; // fixme
+      return this.hasAnyMinorDiagonalConflicts(); // fixme
     },
 
     // test if any minor diagonals on this board contain conflicts
     hasAnyMinorDiagonalConflicts: function() {
-      return false; // fixme
+      const board = this.rows();
+
+      for (let i = board.length - 1; i >= 0; i--) {
+        let conflicts = 0;
+        for (let j = board.length - 1; j >= 0; j--) {
+          if (i - j >= 0) {
+            conflicts += board[j][i - j];
+          }
+        }
+        if (conflicts > 1) {
+          return true;
+        }
+      }
+
+      for (let i = board.length - 1; i > 0; i--) {
+        let conflicts = 0;
+        for (let j = board.length - 1; j >= i; j--) {
+          const k = i - j;
+          conflicts += board[board.length - 1 + k][j];
+        }
+        if (conflicts > 1) {
+          return true;
+        }
+      }
+
+      return false;
     }
 
     /*--------------------  End of Helper Functions  ---------------------*/
