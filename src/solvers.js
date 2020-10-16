@@ -22,9 +22,7 @@ window.findNRooksSolution = function(n) {
   for (let i = 0; i < board.length; i++) {
     for (let j = 0; j < board.length; j++) {
       board[i][j] = 1;
-      let rowConflict = boardObj.hasAnyRowConflicts();
-      let colConflict = boardObj.hasAnyColConflicts();
-      if (rowConflict || colConflict) {
+      if (boardObj.hasAnyRooksConflicts()) {
         board[i][j] = 0;
       }
     }
@@ -65,24 +63,33 @@ window.countNRooksSolutions = function(n) {
 
 // return a matrix (an array of arrays) representing a single nxn chessboard, with n queens placed such that none of them can attack each other
 window.findNQueensSolution = function(n) {
-  // let boardObj = new Board({n: n});
-  // let board = boardObj.rows();
+  const board = new Board({n: n });
 
-  // for (let i = 0; i < board.length; i++) {
-  //   for (let j = 0; j < board.length; j++) {
-  //     board[i][j] = 1;
-  //     let rowConflict = boardObj.hasAnyRowConflicts();
-  //     let colConflict = boardObj.hasAnyColConflicts();
-  //     let majorConflict = boardObj.hasAnyMajorDiagonalConflicts();
-  //     let minorConflict = boardObj.hasAnyMinorDiagonalConflicts();
-  //     if (rowConflict || colConflict || majorConflict || minorConflict) {
-  //       board[i][j] = 0;
-  //     }
-  //   }
-  // }
-  // console.log(board);
-  // console.log('Single solution for ' + n + ' queens:', JSON.stringify(board));
-  // return board;
+  const boardTree = (count) => {
+    let row = count;
+
+    if (count === n) {
+      return true;
+    }
+
+    for (let i = 0; i < n; i++) {
+      board.togglePiece(row, i);
+      count++;
+
+      if (!board.hasAnyQueenConflictsOn(row, i)) {
+        if (boardTree(count)) {
+          return true;
+        }
+      }
+
+      board.togglePiece(row, i);
+      count--;
+    }
+  };
+  boardTree(0);
+
+  console.log('Single solution for ' + n + ' queens:', JSON.stringify(board.rows()));
+  return board.rows();
 };
 
 // return the number of nxn chessboards that exist, with n queens placed such that none of them can attack each other
