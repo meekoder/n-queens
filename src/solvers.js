@@ -15,8 +15,8 @@
 
 
 
-window.findNRooksSolution = function(n) {
-  let boardObj = new Board({n: n});
+window.findNRooksSolution = (n) => {
+  const boardObj = new Board({n: n});
   let board = boardObj.rows();
 
   for (let i = 0; i < board.length; i++) {
@@ -33,24 +33,19 @@ window.findNRooksSolution = function(n) {
 };
 
 // return the number of nxn chessboards that exist, with n rooks placed such that none of them can attack each other
-window.countNRooksSolutions = function(n) {
-  var solutionCount = 0;
-
-  let board = new Board({n: n});
-
-  let boardTree = function(row) {
+window.countNRooksSolutions = (n) => {
+  let solutionCount = 0;
+  const board = new Board({n: n});
+  const boardTree = (row) => {
     if (row === n) {
       solutionCount++;
       return;
     }
-
     for (let i = 0; i < n; i++) {
       board.togglePiece(row, i);
-
       if (!board.hasAnyRooksConflicts()) {
         boardTree(row + 1);
       }
-
       board.togglePiece(row, i);
     }
 
@@ -62,26 +57,21 @@ window.countNRooksSolutions = function(n) {
 };
 
 // return a matrix (an array of arrays) representing a single nxn chessboard, with n queens placed such that none of them can attack each other
-window.findNQueensSolution = function(n) {
+window.findNQueensSolution = (n) => {
   const board = new Board({n: n });
-
   const boardTree = (count) => {
     let row = count;
-
     if (count === n) {
       return true;
     }
-
     for (let i = 0; i < n; i++) {
       board.togglePiece(row, i);
       count++;
-
       if (!board.hasAnyQueenConflictsOn(row, i)) {
         if (boardTree(count)) {
           return true;
         }
       }
-
       board.togglePiece(row, i);
       count--;
     }
@@ -93,7 +83,7 @@ window.findNQueensSolution = function(n) {
 };
 
 // return the number of nxn chessboards that exist, with n queens placed such that none of them can attack each other
-window.countNQueensSolutions = function(n) {
+window.countNQueensSolutions = (n) => {
   let solutionCount = 0;
   const board = new Board({ n: n });
   const boardTree = (row) => {
